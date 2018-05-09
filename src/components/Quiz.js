@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 
+
 class Quiz extends Component {
+
   render() {
     return (
       <div className="Quiz">
-        <h3>Quiz</h3>
+        <h1>QUIZ</h1>
       </div>
     );
   }

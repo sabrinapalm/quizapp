@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import firebase, {googleProvider, auth} from '../globals/firebase.js';
+import { PropTypes } from 'prop-types';
+import  { googleProvider, auth } from '../globals/firebase.js';
 import Button from 'material-ui/Button';
 import Colors from '../globals/Colors';
-import Avatar from 'material-ui/Avatar';
 import '../css/Login.css';
+import logo from '../resources/logo.png'
 
-const style = {
+
+const styles = {
   button: {
     background: Colors.Transparent,
     borderRadius: 0,
     border: '2px solid white',
     color: Colors.White,
-    height: 40,
+    height: 48,
     padding: '0 20px',
-    width: 280
-  },
+    width: 270
+  }
 };
 
 
@@ -22,40 +24,49 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      photo: '',
-      loginError: false,
+      loggedin: false,
     }
   }
 
 loginGoogle = () => {
+
   const { history } = this.props;
 
   auth.signInWithPopup(googleProvider).then((result) => {
     const user = result.user;
     console.log(user);
-    this.setState({name: user.displayName});
-    this.setState({photo: user.photoURL});
-  })
-}
+    this.setState({loggedin: true})
+    console.log(this.state.loggedin)
+    console.log(user.displayName)
 
+    if (this.state.loggedin === true) {
+      history.push('/menu');
+    }
+
+  }).catch((error) => {
+    console.log(error.message);
+    this.setState({loggedin: false})
+    console.log(this.state.loggedin)
+  });
+
+}
 
   render() {
     return (
       <div className="App">
-      <Avatar
-        alt={this.state.name}
-        src={this.state.photo}
-      />
         <header className="App-header">
-          <h1 className="App-title">QUIZ<span style={{color: Colors.Accent}}>&#916;PP</span></h1>
+        <img src={logo} alt="logo"/>
         </header>
-        <Button variant="raised" style={style.button} onClick={this.loginGoogle}>
+        <Button variant="raised" style={styles.button} onClick={this.loginGoogle}>
           Sign in with Google
-      </Button>
+        </Button>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.object.isRequired,
+};
 
 export default Login;

@@ -4,7 +4,7 @@ class HighScores extends Component {
   render() {
     return (
       <div className="HighScores">
-        <h3>High scores</h3>
+        <h1>HIGH SCORES</h1>
       </div>
     );
   }
