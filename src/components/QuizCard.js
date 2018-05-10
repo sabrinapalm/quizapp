@@ -17,7 +17,7 @@ const styles = {
   }
 }
 
-class QuizCard extends Component {
+export default class QuizCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -95,5 +95,3 @@ class QuizCard extends Component {
     );
   }
 }
-
-export default QuizCard;

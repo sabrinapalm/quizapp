@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class HighScores extends Component {
+export default class HighScores extends Component {
   render() {
     return (
       <div className="HighScores">
@@ -9,5 +9,3 @@ class HighScores extends Component {
     );
   }
 }
-
-export default HighScores;

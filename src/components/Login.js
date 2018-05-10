@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import  { googleProvider, auth } from '../globals/firebase.js';
+import  firebase, { googleProvider, auth } from '../globals/firebase.js';
 import Button from 'material-ui/Button';
 import Colors from '../globals/Colors';
 import '../css/Login.css';
-import logo from '../resources/logo.png'
+import logo from '../resources/logo.png';
 
 
 const styles = {
@@ -16,11 +16,14 @@ const styles = {
     height: 48,
     padding: '0 20px',
     width: 270
-  }
+  },
+  logosmall: {
+    width: 50,
+  },
 };
 
 
-class Login extends Component {
+export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,10 +37,22 @@ loginGoogle = () => {
 
   auth.signInWithPopup(googleProvider).then((result) => {
     const user = result.user;
-    console.log(user);
+    const ref = firebase.database().ref('users/');
+
+    /*let currentUser = {
+      username: user.displayName,
+      photo: user.photoURL,
+      id: user.uid,
+      score: 0,
+    }
+
+    ref.once("value", function(snapshot){
+      console.log(snapshot)
+      //ref.push(currentUser);
+
+    });*/
+
     this.setState({loggedin: true})
-    console.log(this.state.loggedin)
-    console.log(user.displayName)
 
     if (this.state.loggedin === true) {
       history.push('/menu');
@@ -54,12 +69,12 @@ loginGoogle = () => {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-        <img src={logo} alt="logo"/>
-        </header>
-        <Button variant="raised" style={styles.button} onClick={this.loginGoogle}>
-          Sign in with Google
-        </Button>
+          <header className="App-header">
+          <img src={logo} alt="logo"/>
+          </header>
+          <Button variant="raised" style={styles.button} onClick={this.loginGoogle}>
+            Sign in with Google
+          </Button>
       </div>
     );
   }
@@ -68,5 +83,3 @@ loginGoogle = () => {
 Login.propTypes = {
   history: PropTypes.object.isRequired,
 };
-
-export default Login;
