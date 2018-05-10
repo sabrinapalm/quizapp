@@ -1,19 +1,42 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Login from './components/Login';
+import firebase from './globals/firebase';
 import Menu from './components/Menu';
 
-class App extends Component {
-  render() {
-    return (
-      <Router>
-        <Switch>
-          <Route exact path='/' component={Login} />
-          <Route exact path='/menu' component={Menu} />
-        </Switch>
-      </Router>
-    )
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      authenticated: false,
+      name: '',
+      photo: '',
   }
 }
 
-export default App;
+componentWillMount() {
+  this.authListener = firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      this.setState({authenticated: true})
+    } else {
+      this.setState({authenticated: false})
+    }
+    if (this.state.authenticated === true) {
+      this.setState({name: user.displayName});
+      this.setState({photo: user.photoURL});
+    }
+  })
+}
+
+componentWillUnMount() {
+  this.authListener();
+}
+
+  render() {
+    let user = {
+      name: this.state.name,
+      photo: this.state.photo,
+    }
+    return (
+      <Menu user={user} authenticated={this.state.authenticated}/>
+    )
+  }
+}

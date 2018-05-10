@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import  firebase, { signedIn } from '../globals/firebase.js';
-import Button from 'material-ui/Button';
+
 
 export default class Quiz extends Component {
-
   render() {
+    console.log('quiz props passed: ', this.props.user)
     return (
       <div className="Quiz">
-        <h1>QUIZ</h1>
-        <Button variant="raised" color="secondary" onClick={signedIn}>GET USER INFO</Button>
+        <h1>Hi, {this.props.user.name}</h1>
+        <img src={this.props.user.photo} alt="Bild"/>
       </div>
     );
   }
