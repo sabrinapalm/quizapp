@@ -7,7 +7,6 @@ import HighScores from './HighScores';
 import Profile from './Profile';
 import Login from './Login';
 import Logout from './Logout';
-import Avatar from 'material-ui/Avatar';
 
 const styles = {
   tabs: {
@@ -33,7 +32,7 @@ export default class Menu extends React.Component {
   constructor(){
     super();
     this.state = {
-      value: 0,
+      value: 2,
     }
   }
 
@@ -53,7 +52,6 @@ export default class Menu extends React.Component {
         <Tab label="High scores" />
         <Tab label="Profile" />
         </Tabs>
-        <Avatar style={styles.photo} alt={this.props.user.name} src={this.props.user.photo} />
         <Logout />
         </AppBar>
         :

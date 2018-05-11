@@ -32,6 +32,7 @@ export default class Quizcard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      myQuestions: [],
       question: '',
       correctanswer: '',
       a: '',
@@ -40,7 +41,6 @@ export default class Quizcard extends Component {
       d: '',
       disabled: true,
       value: null,
-      myQuestions: [],
       started: false,
       start: true,
     };
@@ -68,16 +68,17 @@ export default class Quizcard extends Component {
 }
 
 startQuiz = event => {
-  this.setState({started: true});
-  this.setState({start: false});
   const list = this.state.myQuestions;
+  this.setState({started: true});
+  this.setState({start: !true});
+
   for (let i = 0; i < list.length; i++) {
-    this.setState({question: list[0].question})
-    this.setState({a: list[0].answers.a})
-    this.setState({b: list[0].answers.b})
-    this.setState({c: list[0].answers.c})
-    this.setState({d: list[0].answers.d})
-    this.setState({correctanswer: list[0].correctanswer})
+    this.setState({question: list[i].question})
+    this.setState({a: list[i].answers.a})
+    this.setState({b: list[i].answers.b})
+    this.setState({c: list[i].answers.c})
+    this.setState({d: list[i].answers.d})
+    this.setState({correctanswer: list[i].correctanswer})
   }
 };
 
@@ -103,7 +104,7 @@ handleChange = event => {
       <Paper style={styles.container}>
       <FormControl component="fieldset">
         <FormLabel component="legend" style={styles.textstyle}>{this.state.question}</FormLabel>
-        <RadioGroup value={this.state.value} onChange={this.handleChange} >
+        <RadioGroup value={this.state.value} onChange={this.handleChange.bind(this)} >
           <FormControlLabel disabled={this.state.start} value={this.state.a} control={<Radio />} label={this.state.a} />
           <FormControlLabel disabled={this.state.start} value={this.state.b} control={<Radio />} label={this.state.b} />
           <FormControlLabel disabled={this.state.start} value={this.state.c} control={<Radio />} label={this.state.c} />
@@ -116,7 +117,7 @@ handleChange = event => {
           size="small"
           color="secondary"
           variant="raised"
-          onClick={this.startQuiz}
+          onClick={this.startQuiz.bind(this)}
           disabled={this.state.started}>
           START QUIZ
           </Button>
