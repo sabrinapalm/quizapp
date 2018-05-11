@@ -7,6 +7,7 @@ import HighScores from './HighScores';
 import Profile from './Profile';
 import Login from './Login';
 import Logout from './Logout';
+import Avatar from 'material-ui/Avatar';
 
 const styles = {
   tabs: {
@@ -18,6 +19,13 @@ const styles = {
     right: 10,
     top: 5,
   },
+  photo: {
+    position: 'absolute',
+    right: 120,
+    top: 5,
+    height: 37,
+    width: 37,
+  }
 }
 
 
@@ -37,7 +45,7 @@ export default class Menu extends React.Component {
     const { value } = this.state;
     return (
       <div>
-      {this.props.authenticated
+      { this.props.authenticated
         ?
         <AppBar position="static" style={styles.tabs}>
         <Tabs value={value} onChange={this.handleChange}>
@@ -45,14 +53,15 @@ export default class Menu extends React.Component {
         <Tab label="High scores" />
         <Tab label="Profile" />
         </Tabs>
+        <Avatar style={styles.photo} alt={this.props.user.name} src={this.props.user.photo} />
         <Logout />
         </AppBar>
         :
         <Login />
       }
-      {value === 0 && <Quiz user={this.props.user} />}
-      {value === 1 && <HighScores user={this.props.user}/>}
-      {value === 2 && <Profile user={this.props.user}/>}
+        {value === 0 && <Quiz user={this.props.user} authenticated={this.props.authenticated}/>}
+        {value === 1 && <HighScores user={this.props.user} authenticated={this.props.authenticated}/>}
+        {value === 2 && <Profile user={this.props.user} authenticated={this.props.authenticated}/>}
       </div>
     );
   }

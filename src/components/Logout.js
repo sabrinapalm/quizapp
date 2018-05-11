@@ -7,8 +7,10 @@ const styles = {
   logoutButton: {
     position: 'absolute',
     width: 100,
-    top: 5,
+    top: 6,
     right: 10,
+    color: 'white',
+    border: '2px solid white',
   }
 }
 
@@ -16,6 +18,7 @@ export default class Logout extends Component {
   constructor() {
     super();
     this.state = {
+      title: 'LOG OUT',
     }
   }
 
@@ -28,8 +31,8 @@ export default class Logout extends Component {
 
   render() {
     return (
-      <Button style={styles.logoutButton} variant="raised" color="secondary" onClick={this.logOut}>
-        LOG OUT
+      <Button style={styles.logoutButton} size="small" onClick={this.logOut}>
+        {this.state.title}
       </Button>
     );
   }

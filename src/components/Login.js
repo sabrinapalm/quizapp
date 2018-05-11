@@ -3,7 +3,7 @@ import Button from 'material-ui/Button';
 import Colors from '../globals/Colors';
 import '../css/Login.css';
 import logo from '../resources/logo.png';
-import { googleProvider, auth } from '../globals/firebase';
+import firebase, { googleProvider, auth } from '../globals/firebase';
 
 
 const styles = {
@@ -30,7 +30,26 @@ export default class Login extends Component {
 
   loginGoogle = () => {
     auth.signInWithPopup(googleProvider).then((result) => {
-      console.log(result.user);
+      /*let userResult = result.user;
+      let user = {
+        name: userResult.displayName,
+        email: userResult.email,
+      }
+      firebase.database().ref('users/').push(user);*/
+
+      /*
+      ADD NEW Q.
+      let newq = {
+        question: '',
+        correctanswer: '',
+        answers: {
+          a: '',
+          b: '',
+          c: '',
+          d: ''
+        }
+      }
+      firebase.database().ref('questions/').push(newq);*/
     }).catch((error) => {
       console.log(error.message);
     });
@@ -42,7 +61,7 @@ export default class Login extends Component {
           <header className="App-header">
           <img src={logo} alt="logo"/>
           </header>
-          <Button variant="raised" style={styles.button} onClick={ this.loginGoogle } user={"Sabrina"}>
+          <Button variant="raised" style={styles.button} onClick={ this.loginGoogle }>
             Sign in with Google
           </Button>
       </div>
