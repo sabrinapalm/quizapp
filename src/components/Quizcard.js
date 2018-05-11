@@ -18,9 +18,13 @@ const styles = {
     fontSize: 20,
     marginBottom: 10,
   },
+  startquizButton: {
+    marginTop: 10,
+  },
   nextButton: {
     backgroundColor: Colors.Accent,
     marginTop: 10,
+    float: 'right',
   }
 }
 
@@ -36,55 +40,63 @@ export default class Quizcard extends Component {
       d: '',
       disabled: true,
       value: null,
+      myQuestions: [],
+      started: false,
+      start: true,
     };
   }
 
-  handleChange = event => {
-    let userValue = event.target.value;
-    this.setState({ value: userValue });
+  componentWillMount() {
+    this.fetchQuestions();
+  }
 
-    if (userValue) {
-      this.setState({disabled: false})
-    }
-
-    if (userValue === this.state.correctanswer) {
-      console.log('CORRECT')
-    } else {
-      console.log('WRONG!')
-    }
-  };
-
-  handleClick = event => {
-
-  };
-
-
-  getQuestions = () => {
+  fetchQuestions = () => {
     let db = firebase.database();
     let ref = db.ref("questions");
 
     ref.on("value", (snapshot) => { snapshot.forEach((q) => {
       let value = q.val();
+
       let qa = {
         question: value.question,
         correctanswer: value.correctanswer,
         answers: value.answers,
       }
-      console.log(qa);
-
-      this.setState({question: qa.question})
-      this.setState({correctanswer: qa.correctanswer})
-      this.setState({a: qa.answers.a})
-      this.setState({b: qa.answers.b})
-      this.setState({c: qa.answers.c})
-      this.setState({d: qa.answers.d})
+      this.setState({ myQuestions: [...this.state.myQuestions, qa] })
     })
   })
 }
 
-  componentWillMount() {
-    this.getQuestions();
+startQuiz = event => {
+  this.setState({started: true});
+  this.setState({start: false});
+  const list = this.state.myQuestions;
+  for (let i = 0; i < list.length; i++) {
+    this.setState({question: list[0].question})
+    this.setState({a: list[0].answers.a})
+    this.setState({b: list[0].answers.b})
+    this.setState({c: list[0].answers.c})
+    this.setState({d: list[0].answers.d})
+    this.setState({correctanswer: list[0].correctanswer})
   }
+};
+
+
+handleChange = event => {
+  let userValue = event.target.value;
+  this.setState({ value: userValue });
+
+  if (userValue) {
+    this.setState({disabled: false})
+  }
+
+  if (userValue === this.state.correctanswer) {
+    console.log('CORRECT')
+  } else {
+    console.log('WRONG!')
+  }
+};
+
 
   render() {
     return (
@@ -92,22 +104,21 @@ export default class Quizcard extends Component {
       <FormControl component="fieldset">
         <FormLabel component="legend" style={styles.textstyle}>{this.state.question}</FormLabel>
         <RadioGroup value={this.state.value} onChange={this.handleChange} >
-          <FormControlLabel value={this.state.a} control={<Radio />} label={this.state.a} />
-          <FormControlLabel value={this.state.b} control={<Radio />} label={this.state.b} />
-          <FormControlLabel value={this.state.c} control={<Radio />} label={this.state.c} />
-          <FormControlLabel value={this.state.d} control={<Radio />} label={this.state.d} />
+          <FormControlLabel disabled={this.state.start} value={this.state.a} control={<Radio />} label={this.state.a} />
+          <FormControlLabel disabled={this.state.start} value={this.state.b} control={<Radio />} label={this.state.b} />
+          <FormControlLabel disabled={this.state.start} value={this.state.c} control={<Radio />} label={this.state.c} />
+          <FormControlLabel disabled={this.state.start} value={this.state.d} control={<Radio />} label={this.state.d} />
         </RadioGroup>
       </FormControl>
         <div>
-          <Button
-            style={styles.nextButton}
-            size="small"
-            variant="raised"
-            color="secondary"
-            disabled={this.state.disabled}
-            onChange={this.handleChange}
-            onClick={this.handleClick}>
-            NEXT
+        <Button
+          style={styles.startquizButton}
+          size="small"
+          color="secondary"
+          variant="raised"
+          onClick={this.startQuiz}
+          disabled={this.state.started}>
+          START QUIZ
           </Button>
         </div>
       </Paper>
