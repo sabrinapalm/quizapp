@@ -30,28 +30,31 @@ export default class Login extends Component {
 
   loginGoogle = () => {
     auth.signInWithPopup(googleProvider).then((result) => {
-      /*let userResult = result.user;
+
+      let userResult = result.user;
+
+      console.log(userResult);
+
       let user = {
         name: userResult.displayName,
+        photo: userResult.photoURL,
         email: userResult.email,
+        uid: userResult.uid,
+        quizscore: 0,
       }
-      firebase.database().ref('users/').push(user);*/
 
-      /*
-      ADD NEW Q.
-      let newq = {
-        question: '',
-        correctanswer: '',
-        answers: {
-          a: '',
-          b: '',
-          c: '',
-          d: ''
-        }
-      }
-      firebase.database().ref('questions/').push(newq);*/
+      firebase.database().ref('users/' + user.uid).set({
+        username: user.name,
+        email: user.email,
+        photo: user.photo,
+        uid: user.uid,
+        quizscore: user.quizscore,
+      })
+
     }).catch((error) => {
+
       console.log(error.message);
+
     });
   }
 

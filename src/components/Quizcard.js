@@ -31,6 +31,8 @@ const styles = {
 export default class Quizcard extends Component {
   constructor(props) {
     super(props);
+    this.handleChange = this.handleChange.bind(this)
+    this.nextQuestion = this.nextQuestion.bind(this)
     this.state = {
       myQuestions: [],
       question: '',
@@ -46,8 +48,17 @@ export default class Quizcard extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.fetchQuestions();
+  }
+
+  componentWillMount() {
+    this.nextQuestion();
+  }
+
+  componentWillUnmount() {
+    this.fetchQuestions();
+    this.nextQuestion();
   }
 
   fetchQuestions = () => {
@@ -62,39 +73,43 @@ export default class Quizcard extends Component {
         correctanswer: value.correctanswer,
         answers: value.answers,
       }
+
       this.setState({ myQuestions: [...this.state.myQuestions, qa] })
     })
   })
 }
 
 startQuiz = event => {
-  const list = this.state.myQuestions;
   this.setState({started: true});
   this.setState({start: !true});
-
-  for (let i = 0; i < list.length; i++) {
-    this.setState({question: list[i].question})
-    this.setState({a: list[i].answers.a})
-    this.setState({b: list[i].answers.b})
-    this.setState({c: list[i].answers.c})
-    this.setState({d: list[i].answers.d})
-    this.setState({correctanswer: list[i].correctanswer})
-  }
+  this.nextQuestion();
 };
 
+nextQuestion = event => {
+  const list = this.state.myQuestions;
+    for (let i = 0; i < list.length; i++) {
+      this.setState({question: list[i].question})
+      this.setState({a: list[i].answers.a})
+      this.setState({b: list[i].answers.b})
+      this.setState({c: list[i].answers.c})
+      this.setState({d: list[i].answers.d})
+      this.setState({correctanswer: list[i].correctanswer})
+    }
+}
 
-handleChange = event => {
-  let userValue = event.target.value;
-  this.setState({ value: userValue });
 
-  if (userValue) {
-    this.setState({disabled: false})
-  }
+handleChange = (event) => {
+    this.setState({done: false})
+    if (this.state.started === true) {
 
-  if (userValue === this.state.correctanswer) {
-    console.log('CORRECT')
-  } else {
-    console.log('WRONG!')
+    let userValue = event.target.value;
+    this.setState({ value: userValue });
+
+    if (userValue === this.state.correctanswer) {
+      console.log('CORRECT!')
+    } else {
+      console.log('WRONG!')
+    }
   }
 };
 

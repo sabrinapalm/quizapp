@@ -9,10 +9,12 @@ export default class App extends Component {
       authenticated: false,
       name: '',
       photo: '',
+      email: '',
+      uid: '',
   }
 }
 
-componentWillMount() {
+componentDidMount() {
   this.authListener = firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       this.setState({authenticated: true})
@@ -22,6 +24,9 @@ componentWillMount() {
     if (this.state.authenticated === true) {
       this.setState({name: user.displayName});
       this.setState({photo: user.photoURL});
+      this.setState({email: user.email});
+      this.setState({uid: user.uid});
+
     }
   })
 }
@@ -34,6 +39,8 @@ componentWillUnMount() {
     let user = {
       name: this.state.name,
       photo: this.state.photo,
+      email: this.state.email,
+      uid: this.state.uid,
     }
     return (
       <Menu user={user} authenticated={this.state.authenticated}/>
