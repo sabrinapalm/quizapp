@@ -132,9 +132,8 @@ handleChange = (event) => {
           size="small"
           color="secondary"
           variant="raised"
-          onClick={this.startQuiz.bind(this)}
-          disabled={this.state.started}>
-          START QUIZ
+          onClick={this.startQuiz.bind(this)}>
+          {!this.state.started ? 'START QUIZ' : 'NEXT'}
           </Button>
         </div>
       </Paper>
