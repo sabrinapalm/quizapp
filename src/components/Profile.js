@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Avatar from 'material-ui/Avatar';
-import Button from 'material-ui/Button';
 import Colors from '../globals/Colors';
 import firebase from '../globals/firebase';
 
@@ -29,6 +28,10 @@ export default class Profile extends Component {
     this.getUserData = this.getUserData.bind(this);
   }
 
+componentWillMount() {
+  this.getUserData();
+}
+
   getUserData = () => {
     let userId = this.props.user.uid;
     return firebase.database().ref('/users/' + userId).once('value').then((snapshot) => {
@@ -56,12 +59,11 @@ export default class Profile extends Component {
           alt={this.props.user.name}
           src={this.props.user.photo}
         />
-        <h2>{this.props.user.name}</h2>
-        <span>Email: {this.props.user.email}</span>
+        <h2>{this.state.username}</h2>
+        <span>Email: {this.state.email}</span>
         <p>Score: {this.state.score}</p>
         <br />
         <br />
-        <Button color="secondary" variant="raised" onClick={this.getUserData}>Get user info!</Button>
       </div>
     :
       <div></div>
