@@ -14,9 +14,12 @@ const styles = {
     height: 150,
     margin: '180px auto',
     marginBottom: 0,
+    border: '2px solid',
+    borderColor: Colors.Accent,
   }
 }
 
+//Flytta detta till parent component,använd props för att skicka info!
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +31,7 @@ export default class Profile extends Component {
     this.getUserData = this.getUserData.bind(this);
   }
 
-componentWillMount() {
+componentDidMount() {
   this.getUserData();
 }
 

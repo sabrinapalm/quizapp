@@ -47,12 +47,12 @@ export default class Menu extends React.Component {
       { this.props.authenticated
         ?
         <AppBar position="static" style={styles.tabs}>
-        <Tabs value={value} onChange={this.handleChange}>
-        <Tab label="Quiz" />
-        <Tab label="High scores" />
-        <Tab label="Profile" />
-        </Tabs>
-        <Logout />
+          <Tabs value={value} onChange={this.handleChange}>
+          <Tab label="Quiz" />
+          <Tab label="High scores" />
+          <Tab label="Profile" />
+          </Tabs>
+          <Logout />
         </AppBar>
         :
         <Login />

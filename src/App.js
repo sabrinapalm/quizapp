@@ -22,11 +22,12 @@ componentDidMount() {
       this.setState({authenticated: false})
     }
     if (this.state.authenticated === true) {
-      this.setState({name: user.displayName});
-      this.setState({photo: user.photoURL});
-      this.setState({email: user.email});
-      this.setState({uid: user.uid});
-
+      this.setState({
+        name: user.displayName,
+        photo: user.photoURL,
+        email: user.email,
+        uid: user.uid
+      });
     }
   })
 }
