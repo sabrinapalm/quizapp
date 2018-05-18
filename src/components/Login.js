@@ -33,8 +33,6 @@ export default class Login extends Component {
 
       let userResult = result.user;
 
-      console.log(userResult);
-
       let user = {
         name: userResult.displayName,
         photo: userResult.photoURL,

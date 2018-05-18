@@ -64,6 +64,7 @@ export default class Quizcard extends Component {
   componentWillUnmount() {
     this.fetchQuestions();
   }
+
   snapshotFunc = (snapshot) => { snapshot.forEach((q) => {
     let value = q.val();
 
@@ -76,12 +77,14 @@ export default class Quizcard extends Component {
     this.setState({ myQuestions: [...this.state.myQuestions, qa] })
   })
   }
+
   fetchQuestions = () => {
     let db = firebase.database();
     let ref = db.ref("questions");
 
     ref.on("value", this.snapshotFunc);
   }
+
   unsubscribeFetchQuestions = () => {
     let db = firebase.database();
     let ref = db.ref("questions");
@@ -95,7 +98,7 @@ export default class Quizcard extends Component {
       console.log('finished quiz')
 
     } else {
-      let i = this.state.current;//list.currentQuestion;
+      let i = this.state.current;
       if( list[i] ) {
         this.setState({
           current: this.state.current + 1,
@@ -111,8 +114,6 @@ export default class Quizcard extends Component {
       } else {
         this.setState({
           current: this.state.current + 1,
-          start: !true,
-          started: true
         })
       }
     }
@@ -139,6 +140,7 @@ export default class Quizcard extends Component {
       this.setState({currentQuestion: this.state.currentQuestion + 1})
     } else {
       this.setState({finished: true})
+
     }
   };
 
