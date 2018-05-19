@@ -91,6 +91,8 @@ export default class Quizcard extends Component {
     ref.off("value", this.snapshotFunc);
   }
 
+
+
   startQuiz = event => {
     const list = this.state.myQuestions;
     if (this.state.current > list.length ) {
@@ -140,7 +142,6 @@ export default class Quizcard extends Component {
       this.setState({currentQuestion: this.state.currentQuestion + 1})
     } else {
       this.setState({finished: true})
-
     }
   };
 
@@ -151,6 +152,14 @@ export default class Quizcard extends Component {
       return (
         <div style={styles.container}>
           Quiz fininshed! You got {this.state.score} points.
+          <br />
+          <Button
+            style={styles.startquizButton}
+            size="small"
+            color="secondary"
+            variant="raised">
+            Redo
+            </Button>
         </div>
       )
     }
@@ -171,6 +180,7 @@ export default class Quizcard extends Component {
           size="small"
           color="secondary"
           variant="raised"
+          disabled={!this.state.start}
           onClick={this.startQuiz.bind(this)}>
           {!this.state.started ? 'START QUIZ' : 'NEXT'}
           </Button>

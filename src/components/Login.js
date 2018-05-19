@@ -48,7 +48,6 @@ export default class Login extends Component {
         uid: user.uid,
         quizscore: user.quizscore,
       })
-
     }).catch((error) => {
 
       console.log(error.message);
