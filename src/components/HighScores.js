@@ -7,6 +7,8 @@ import firebase from '../globals/firebase';
 const styles = {
   container: {
     backgroundColor: Colors.White,
+    border: '2px solid',
+    borderColor: Colors.Accent,
     margin: '100px auto',
     width: 500,
     color: Colors.Black,
@@ -17,30 +19,30 @@ export default class HighScores extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scoreList: [],
+      data: [],
     }
   }
 
-  componentDidMount() {
-    this.getHighScores();
-  }
+  componentDidMount(){
+      firebase.database().ref('users').once('value').then((snapshot) => {
+        snapshot.forEach((child) => {
+          let users = child.val();
+          this.setState({ data: [...this.state.data, users]})
+        })
 
-  getHighScores = () => {
-    return firebase.database().ref('users').once('value').then((snapshot) => {
-
-      snapshot.forEach(function(child) {
-
-        let users = child.val();
-
-        let user = {
-          username: users.username,
-          score: users.quizscore,
-        }
-        //this.setState({ scoreList: [...this.state.scoreList, user] })
       })
+    }
 
-    })
-  }
+  getHighScore(){
+        return this.state.data.map((user) =>
+        <ListItem key={user.uid}>
+          <Avatar alt={user.username} src={user.photo} />
+          <ListItemText primary={`${user.username}`} secondary={user.quizscore} />
+        </ListItem>
+      )
+    }
+
+
 
   render() {
     return (
@@ -48,13 +50,8 @@ export default class HighScores extends Component {
       { this.props.authenticated
         ?
         <div style={styles.container}>
-          <List>
-
-            <ListItem>
-              <Avatar src={this.props.user.photo}/>
-              <ListItemText primary="Sabrina Palm" secondary="Score: 0"/>
-            </ListItem>
-
+        <List>
+          {this.getHighScore()}
           </List>
         </div>
         :

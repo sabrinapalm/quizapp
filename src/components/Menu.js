@@ -32,7 +32,7 @@ export default class Menu extends React.Component {
   constructor(){
     super();
     this.state = {
-      value: 1,
+      value: 0,
     }
   }
 
@@ -48,9 +48,9 @@ export default class Menu extends React.Component {
         ?
         <AppBar position="static" style={styles.tabs}>
           <Tabs value={value} onChange={this.handleChange}>
-          <Tab label="Quiz" />
-          <Tab label="High scores" />
-          <Tab label="Profile" />
+            <Tab label="Quiz" />
+            <Tab label="High scores" />
+            <Tab label="Profile" />
           </Tabs>
           <Logout />
         </AppBar>
