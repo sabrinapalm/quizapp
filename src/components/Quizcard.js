@@ -31,6 +31,17 @@ const styles = {
     backgroundColor: Colors.Accent,
     marginTop: 10,
     float: 'right',
+  },
+  correctAnswerStyle: {
+    color: 'green',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  wrongAnswerStyle: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: -10,
+    fontWeight: 'bold',
   }
 }
 
@@ -54,7 +65,8 @@ export default class Quizcard extends Component {
       finished: false,
       score: 0,
       current: 0,
-      showAnswer: false
+      showAnswer: false,
+      showWrongAnswer: false,
     };
   }
 
@@ -97,9 +109,11 @@ export default class Quizcard extends Component {
   startQuiz = event => {
     const list = this.state.myQuestions;
     if (this.state.current > list.length ) {
-      // this.props.tellParentWeFinishedTheQuiz
-      console.log('finished quiz')
-
+      this.setState({
+        current: 0,
+        currentQuestion: 0,
+        finished: false,
+      })
     } else {
       let i = this.state.current;
       if( list[i] ) {
@@ -107,6 +121,8 @@ export default class Quizcard extends Component {
           current: this.state.current + 1,
           start: !true,
           started: true,
+          showAnswer: false,
+          showWrongAnswer: false,
           question: list[i].question,
           a: list[i].answers.a,
           b: list[i].answers.b,
@@ -131,12 +147,14 @@ export default class Quizcard extends Component {
     if (userValue === this.state.correctanswer) {
       this.setState({
         start: true,
+        showAnswer: true,
         score: this.state.score + 1
       })
-      console.log('answer is correct!')
     } else {
-      this.setState({start: true})
-      console.log('answer is wrong!')
+      this.setState({
+        start: true,
+        showWrongAnswer: true,
+      })
     }
 
     if (this.state.currentQuestion < listLength - 1) {
@@ -144,6 +162,30 @@ export default class Quizcard extends Component {
     } else {
       this.setState({finished: true})
     }
+  };
+
+  handleClick = () => {
+    if (this.state.finished === true) {
+      this.setState({
+        question: '',
+        correctanswer: '',
+        a: '',
+        b: '',
+        c: '',
+        d: '',
+        disabled: true,
+        value: null,
+        started: false,
+        start: true,
+        currentQuestion: 0,
+        finished: false,
+        score: 0,
+        current: 0,
+        showAnswer: false,
+        showWrongAnswer: false,
+      })
+    }
+    this.startQuiz();
   };
 
 
@@ -158,7 +200,8 @@ export default class Quizcard extends Component {
             style={styles.startquizButton}
             size="small"
             color="secondary"
-            variant="raised">
+            variant="raised"
+            onClick={this.handleClick}>
             Redo
             </Button>
         </div>
@@ -166,6 +209,8 @@ export default class Quizcard extends Component {
     }
     return (
       <div style={styles.container}>
+      {(this.state.showAnswer) ? <p style={styles.correctAnswerStyle}>RÄTT + 1</p> : <p /> }
+      {(this.state.showWrongAnswer) ? <p style={styles.wrongAnswerStyle}>FEL Rätt svar är {this.state.correctanswer}</p> : <p /> }
         <FormControl component="fieldset">
           <FormLabel component="legend" style={styles.textstyle}>{this.state.question}</FormLabel>
           <RadioGroup value={this.state.value} onChange={this.handleChange.bind(this)} >

@@ -50,8 +50,8 @@ export default class HighScores extends Component {
       { this.props.authenticated
         ?
         <div style={styles.container}>
-        <List>
-          {this.getHighScore()}
+          <List>
+            {this.getHighScore()}
           </List>
         </div>
         :

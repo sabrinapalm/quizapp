@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Avatar from 'material-ui/Avatar';
 import Colors from '../globals/Colors';
 import firebase from '../globals/firebase';
+import EditIcon from '@material-ui/icons/Edit';
+
 
 const styles = {
   container: {
@@ -16,6 +18,10 @@ const styles = {
     marginBottom: 0,
     border: '2px solid',
     borderColor: Colors.Accent,
+  },
+  button: {
+    backgroundColor: Colors.Transparent,
+    width: 10,
   }
 }
 
@@ -27,6 +33,7 @@ export default class Profile extends Component {
       username: '',
       email: '',
       score: null,
+      edit: false,
     }
     this.getUserData = this.getUserData.bind(this);
   }
@@ -53,6 +60,26 @@ componentDidMount() {
     })
   };
 
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  changeUserName = () => {
+    this.setState({ open: true });
+    var user = firebase.auth().currentUser;
+    console.log(user);
+
+    /*
+    user.updateProfile({
+      displayName: "Jane Q. User",
+      }).then(function() {
+      // Update successful.
+      }).catch(function(error) {
+      // An error happened.
+    });
+    */
+  }
+
   render() {
     return (
       <div>
@@ -62,7 +89,9 @@ componentDidMount() {
           alt={this.props.user.name}
           src={this.props.user.photo}
         />
-        <h2>{this.state.username}</h2>
+        <div>
+      </div>
+        <h2>{this.state.username} <EditIcon style={{color: Colors.Accent, cursor: 'pointer'}} onClick={this.changeUserName}/> </h2>
         <span>Email: {this.state.email}</span>
         <p>Score: {this.state.score}</p>
         <br />
