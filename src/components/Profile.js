@@ -3,6 +3,7 @@ import Avatar from 'material-ui/Avatar';
 import Colors from '../globals/Colors';
 import firebase from '../globals/firebase';
 import EditIcon from '@material-ui/icons/Edit';
+import TextField from '@material-ui/core/TextField';
 
 
 const styles = {
@@ -22,6 +23,15 @@ const styles = {
   button: {
     backgroundColor: Colors.Transparent,
     width: 10,
+  },
+  inputField: {
+    backgroundColor: Colors.Transparent,
+    border: '2px solid',
+    borderColor: Colors.Accent,
+    outline: 'none',
+    color: Colors.White,
+    padding: 5,
+    marginTop: 10,
   }
 }
 
@@ -59,26 +69,16 @@ componentDidMount() {
 
     })
   };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   changeUserName = () => {
-    this.setState({ open: true });
-    var user = firebase.auth().currentUser;
-    console.log(user);
-
-    /*
-    user.updateProfile({
-      displayName: "Jane Q. User",
-      }).then(function() {
-      // Update successful.
-      }).catch(function(error) {
-      // An error happened.
-    });
-    */
+    this.setState({ edit: true });
   }
+
+  handleChange = name => event => {
+    this.setState({
+      username: event.target.value,
+    });
+    console.log(event.target.value);
+  };
 
   render() {
     return (
@@ -91,8 +91,10 @@ componentDidMount() {
         />
         <div>
       </div>
+      {!this.state.edit ?
         <h2>{this.state.username} <EditIcon style={{color: Colors.Accent, cursor: 'pointer'}} onClick={this.changeUserName}/> </h2>
-        <span>Email: {this.state.email}</span>
+        :
+        <input style={styles.inputField} type="text" onChange={this.handleChange('name')}/>}
         <p>Score: {this.state.score}</p>
         <br />
         <br />
