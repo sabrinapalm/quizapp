@@ -64,6 +64,7 @@ export default class Quizcard extends Component {
       currentQuestion: 0,
       finished: false,
       score: 0,
+      currentScore: 0,
       current: 0,
       showAnswer: false,
       showWrongAnswer: false,
@@ -104,9 +105,16 @@ export default class Quizcard extends Component {
     ref.off("value", this.snapshotFunc);
   }
 
-
+  getCurrentScore = () => {
+    let userId = this.props.user.uid;
+    firebase.database().ref('/users/' + userId).once('value').then((snapshot) => {
+      let result = snapshot.val();
+      this.setState({currentScore: result.quizscore})
+    })
+  }
 
   startQuiz = event => {
+    this.getCurrentScore();
     const list = this.state.myQuestions;
     if (this.state.current > list.length ) {
       this.setState({
@@ -140,6 +148,7 @@ export default class Quizcard extends Component {
 
 
   handleChange = (event) => {
+    let userId = this.props.user.uid;
     const listLength = this.state.myQuestions.length;
     let userValue = event.target.value;
     this.setState({ value: userValue });
@@ -160,6 +169,8 @@ export default class Quizcard extends Component {
     if (this.state.currentQuestion < listLength - 1) {
       this.setState({currentQuestion: this.state.currentQuestion + 1})
     } else {
+      let totalScore = this.state.currentScore + this.state.score + 1;
+      firebase.database().ref('/users/' + userId).update({ quizscore: totalScore });
       this.setState({finished: true})
     }
   };
@@ -181,6 +192,7 @@ export default class Quizcard extends Component {
         finished: false,
         score: 0,
         current: 0,
+        currentScore: 0,
         showAnswer: false,
         showWrongAnswer: false,
       })

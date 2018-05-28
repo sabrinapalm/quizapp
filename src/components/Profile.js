@@ -3,7 +3,6 @@ import Avatar from 'material-ui/Avatar';
 import Colors from '../globals/Colors';
 import firebase from '../globals/firebase';
 import EditIcon from '@material-ui/icons/Edit';
-import TextField from '@material-ui/core/TextField';
 
 
 const styles = {
@@ -74,10 +73,15 @@ componentDidMount() {
   }
 
   handleChange = name => event => {
+    let userId = this.props.user.uid;
     this.setState({
       username: event.target.value,
     });
-    console.log(event.target.value);
+    firebase.database().ref('/users/' + userId).update({ username: event.target.value});
+
+    if (event.key === 'Enter') {
+      this.setState({ edit: false });
+    }
   };
 
   render() {
@@ -94,7 +98,7 @@ componentDidMount() {
       {!this.state.edit ?
         <h2>{this.state.username} <EditIcon style={{color: Colors.Accent, cursor: 'pointer'}} onClick={this.changeUserName}/> </h2>
         :
-        <input style={styles.inputField} type="text" onChange={this.handleChange('name')}/>}
+        <input style={styles.inputField} type="text" onChange={this.handleChange('name')} onKeyPress={this.handleChange('name')}/>}
         <p>Score: {this.state.score}</p>
         <br />
         <br />
