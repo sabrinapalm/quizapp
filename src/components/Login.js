@@ -41,12 +41,20 @@ export default class Login extends Component {
         quizscore: 0,
       }
 
-      firebase.database().ref('users/' + user.uid).set({
-        username: user.name,
-        email: user.email,
-        photo: user.photo,
-        uid: user.uid,
-        quizscore: user.quizscore,
+      let checkuser = firebase.auth().currentUser.uid;
+
+      firebase.database().ref('/users/' + checkuser).once('value').then((snapshot) => {
+        if (snapshot.val() !== null) {
+          return;
+        } else {
+          firebase.database().ref('users/' + user.uid).set({
+            username: user.name,
+            email: user.email,
+            photo: user.photo,
+            uid: user.uid,
+            quizscore: user.quizscore,
+          })
+        }
       })
 
     }).catch((error) => {
