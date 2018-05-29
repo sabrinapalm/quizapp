@@ -40,7 +40,7 @@ export default class HighScores extends Component {
         return this.state.data.map((user) =>
         <ListItem key={user.uid}>
           <Avatar alt={user.username} src={user.photo} />
-          <ListItemText primary={`${user.username}`} secondary={user.quizscore} />
+          <ListItemText primary={`${user.username}`} secondary={`Totalscore: ${user.quizscore}`} />
         </ListItem>
       )
     }

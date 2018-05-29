@@ -158,7 +158,7 @@ export default class Quizcard extends Component {
       this.setState({
         start: true,
         showAnswer: true,
-        score: this.state.score + 1
+        score: this.state.score + 10
       })
     } else {
       this.setState({
@@ -207,7 +207,8 @@ export default class Quizcard extends Component {
     if(this.state.current > list.length) {
       return (
         <div style={styles.container}>
-          Quiz fininshed! You got {this.state.score} points.
+          Quiz fininshed! <br />
+          You got {this.state.score} points out of {list.length * 10} points.
           <br />
           <Button
             style={styles.startquizButton}
@@ -222,7 +223,7 @@ export default class Quizcard extends Component {
     }
     return (
       <div style={styles.container}>
-      {(this.state.showAnswer) ? <p style={styles.correctAnswerStyle}>RÄTT + 1</p> : <p /> }
+      {(this.state.showAnswer) ? <p style={styles.correctAnswerStyle}>RÄTT + 10</p> : <p /> }
       {(this.state.showWrongAnswer) ? <p style={styles.wrongAnswerStyle}>FEL Rätt svar är {this.state.correctanswer}</p> : <p /> }
         <FormControl component="fieldset">
           <FormLabel component="legend" style={styles.textstyle}>{this.state.question}</FormLabel>

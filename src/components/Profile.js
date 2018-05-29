@@ -105,8 +105,8 @@ componentDidMount() {
       {!this.state.edit ?
         <h2>{this.state.username} <EditIcon style={{color: Colors.Accent, cursor: 'pointer'}} onClick={this.changeUserName}/> </h2>
         :
-        <input style={styles.inputField} type="text" placeholder="New name.."onChange={this.handleChange('name')} onKeyPress={this.handleChange('name')}/>}
-        <p>Score: {this.state.score}</p>
+        <input style={styles.inputField} type="text" placeholder="New name.."onChange={this.handleChange('name')} onKeyPress={this.handleChange('name')} required/>}
+        <p>TOTALSCORE: {this.state.score}</p>
         <br />
         <br />
       </div>
