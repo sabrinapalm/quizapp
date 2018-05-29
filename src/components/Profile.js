@@ -29,8 +29,9 @@ const styles = {
     borderColor: Colors.Accent,
     outline: 'none',
     color: Colors.White,
-    padding: 5,
+    padding: 10,
     marginTop: 10,
+    fontFamuly: 'Poppins',
   },
   title: {
     textAlign: 'center',
@@ -104,7 +105,7 @@ componentDidMount() {
       {!this.state.edit ?
         <h2>{this.state.username} <EditIcon style={{color: Colors.Accent, cursor: 'pointer'}} onClick={this.changeUserName}/> </h2>
         :
-        <input style={styles.inputField} type="text" onChange={this.handleChange('name')} onKeyPress={this.handleChange('name')}/>}
+        <input style={styles.inputField} type="text" placeholder="New name.."onChange={this.handleChange('name')} onKeyPress={this.handleChange('name')}/>}
         <p>Score: {this.state.score}</p>
         <br />
         <br />
