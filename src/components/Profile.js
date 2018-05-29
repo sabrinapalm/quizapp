@@ -14,7 +14,7 @@ const styles = {
   photo: {
     width: 150,
     height: 150,
-    margin: '180px auto',
+    margin: '10px auto',
     marginBottom: 0,
     border: '2px solid',
     borderColor: Colors.Accent,
@@ -31,6 +31,10 @@ const styles = {
     color: Colors.White,
     padding: 5,
     marginTop: 10,
+  },
+  title: {
+    textAlign: 'center',
+    marginTop: '100px',
   }
 }
 
@@ -87,7 +91,9 @@ componentDidMount() {
   render() {
     return (
       <div>
-      {this.props.authenticated ? <div style={styles.container}>
+      {this.props.authenticated ?
+        <div style={styles.container}>
+        <h2 style={styles.title}>PROFILE</h2>
         <Avatar
           style={styles.photo}
           alt={this.props.user.name}

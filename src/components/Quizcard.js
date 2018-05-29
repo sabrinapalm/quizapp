@@ -10,7 +10,7 @@ const styles = {
     backgroundColor: Colors.White,
     border: '2px solid',
     borderColor: Colors.Accent,
-    margin: '100px auto',
+    margin: '10px auto',
     width: 400,
     padding: 20,
     color: Colors.Black,
@@ -49,6 +49,7 @@ export default class Quizcard extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this)
+    this.fetchQuestions = this.fetchQuestions.bind(this)
     this.state = {
       myQuestions: [],
       question: '',
@@ -169,7 +170,7 @@ export default class Quizcard extends Component {
     if (this.state.currentQuestion < listLength - 1) {
       this.setState({currentQuestion: this.state.currentQuestion + 1})
     } else {
-      let totalScore = this.state.currentScore + this.state.score + 1;
+      let totalScore = this.state.currentScore + this.state.score;
       firebase.database().ref('/users/' + userId).update({ quizscore: totalScore });
       this.setState({finished: true})
     }

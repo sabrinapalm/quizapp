@@ -9,9 +9,13 @@ const styles = {
     backgroundColor: Colors.White,
     border: '2px solid',
     borderColor: Colors.Accent,
-    margin: '100px auto',
+    margin: '10px auto',
     width: 500,
     color: Colors.Black,
+  },
+  title: {
+    textAlign: 'center',
+    marginTop: '100px',
   }
 }
 
@@ -29,7 +33,6 @@ export default class HighScores extends Component {
           let users = child.val();
           this.setState({ data: [...this.state.data, users]})
         })
-
       })
     }
 
@@ -49,14 +52,18 @@ export default class HighScores extends Component {
       <div>
       { this.props.authenticated
         ?
+        <div>
+          <h2 style={styles.title}>HIGH SCORES</h2>
         <div style={styles.container}>
           <List>
             {this.getHighScore()}
           </List>
         </div>
+        </div>
         :
         <div>
         </div>
+
       }
       </div>
     );
