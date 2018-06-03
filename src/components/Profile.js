@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Avatar from 'material-ui/Avatar';
 import Colors from '../globals/Colors';
 import firebase from '../globals/firebase';
+import EditIcon from '@material-ui/icons/Edit';
+
 
 const styles = {
   container: {
@@ -12,11 +14,32 @@ const styles = {
   photo: {
     width: 150,
     height: 150,
-    margin: '180px auto',
+    margin: '10px auto',
     marginBottom: 0,
+    border: '2px solid',
+    borderColor: Colors.Accent,
+  },
+  button: {
+    backgroundColor: Colors.Transparent,
+    width: 10,
+  },
+  inputField: {
+    backgroundColor: Colors.Transparent,
+    border: '2px solid',
+    borderColor: Colors.Accent,
+    outline: 'none',
+    color: Colors.White,
+    padding: 10,
+    marginTop: 10,
+    fontFamuly: 'Poppins',
+  },
+  title: {
+    textAlign: 'center',
+    marginTop: '100px',
   }
 }
 
+//Flytta detta till parent component,använd props för att skicka info!
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -24,11 +47,12 @@ export default class Profile extends Component {
       username: '',
       email: '',
       score: null,
+      edit: false,
     }
     this.getUserData = this.getUserData.bind(this);
   }
 
-componentWillMount() {
+componentDidMount() {
   this.getUserData();
 }
 
@@ -49,19 +73,40 @@ componentWillMount() {
 
     })
   };
+  changeUserName = () => {
+    this.setState({ edit: true });
+  }
+
+  handleChange = name => event => {
+    let userId = this.props.user.uid;
+    this.setState({
+      username: event.target.value,
+    });
+    firebase.database().ref('/users/' + userId).update({ username: event.target.value});
+
+    if (event.key === 'Enter') {
+      this.setState({ edit: false });
+    }
+  };
 
   render() {
     return (
       <div>
-      {this.props.authenticated ? <div style={styles.container}>
+      {this.props.authenticated ?
+        <div style={styles.container}>
+        <h2 style={styles.title}>PROFILE</h2>
         <Avatar
           style={styles.photo}
           alt={this.props.user.name}
           src={this.props.user.photo}
         />
-        <h2>{this.state.username}</h2>
-        <span>Email: {this.state.email}</span>
-        <p>Score: {this.state.score}</p>
+        <div>
+      </div>
+      {!this.state.edit ?
+        <h2>{this.state.username} <EditIcon style={{color: Colors.Accent, cursor: 'pointer'}} onClick={this.changeUserName}/> </h2>
+        :
+        <input style={styles.inputField} type="text" placeholder="New name.."onChange={this.handleChange('name')} onKeyPress={this.handleChange('name')} required/>}
+        <p>TOTALSCORE: {this.state.score}</p>
         <br />
         <br />
       </div>
