@@ -69,6 +69,7 @@ export default class Quizcard extends Component {
       current: 0,
       showAnswer: false,
       showWrongAnswer: false,
+      newName: 'JONNY'
     };
   }
 
@@ -76,11 +77,8 @@ export default class Quizcard extends Component {
     this.fetchQuestions();
   }
 
-  componentWillUnmount() {
-    this.fetchQuestions();
-  }
-
-  snapshotFunc = (snapshot) => { snapshot.forEach((q) => {
+  snapshotFunc = (snapshot) => {
+    snapshot.forEach((q) => {
     let value = q.val();
 
     let qa = {
@@ -90,14 +88,14 @@ export default class Quizcard extends Component {
     }
 
     this.setState({ myQuestions: [...this.state.myQuestions, qa] })
-  })
+    })
   }
 
   fetchQuestions = () => {
     let db = firebase.database();
     let ref = db.ref("questions");
 
-    ref.on("value", this.snapshotFunc);
+    ref.once("value", this.snapshotFunc);
   }
 
   unsubscribeFetchQuestions = () => {
@@ -202,6 +200,11 @@ export default class Quizcard extends Component {
   };
 
 
+  onChangeName = () => {
+    this.props.changeName(this.state.finished);
+  }
+
+
   render() {
     const list = this.state.myQuestions;
     if(this.state.current > list.length) {
@@ -223,6 +226,7 @@ export default class Quizcard extends Component {
     }
     return (
       <div style={styles.container}>
+        <Button onClick={this.onChangeName.bind(this)}>TEST LIFTING STATE</Button>
       {(this.state.showAnswer) ? <p style={styles.correctAnswerStyle}>RÄTT + 10</p> : <p /> }
       {(this.state.showWrongAnswer) ? <p style={styles.wrongAnswerStyle}>FEL Rätt svar är {this.state.correctanswer}</p> : <p /> }
         <FormControl component="fieldset">

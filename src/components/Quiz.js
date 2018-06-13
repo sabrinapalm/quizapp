@@ -9,6 +9,19 @@ const styles = {
 }
 
 export default class Quiz extends Component {
+  constructor(){
+    super();
+    this.state = {
+    finished: false,
+    }
+  }
+
+  onChangeLinkName = (finished) => {
+    this.setState({finished: finished})
+    console.log(finished);
+  }
+
+
   render() {
     const user = this.props.user;
     return (
@@ -17,13 +30,15 @@ export default class Quiz extends Component {
         ?
         <div>
           <h2 style={styles.title}>QUIZ</h2>
-          <Quizcard user={user}/>
+          <Quizcard
+            user={user}
+            changeName={this.onChangeLinkName.bind(this)}
+          />
         </div>
         :
         <div>
         </div>
       }
-
       </div>
     );
   }
